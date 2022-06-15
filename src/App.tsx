@@ -1,81 +1,31 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { PageDashBoard } from './pages/PageDashBoard'
+import { PageHome } from './pages/PageHome'
 import * as S from './styles'
-import Papa from 'papaparse'
 
 function App () {
-  const [parsedData, setParsedData] = useState()
-  const [values, setValues] = useState([])
-  const [tableRows, setTableRows] = useState([])
+  const [parsedData, setParsedData] = useState<any>()
+  const [selectDashBoard, setSelectDashBoard] = useState(false)
 
-  function handleSelect (event: ChangeEvent<HTMLInputElement>) {
-    if (!event.target.files) {
-      return
-    }
-    Papa.parse(event.target.files[0], {
-      header: true,
-      skipEmptyLines: true,
-      complete: (results: any) => {
-        console.log(results)
-        const rowsArray: any = []
-        const valuesArray: any = []
-
-        results.data.map((data: any) => {
-          rowsArray.push(Object.keys(data))
-          return valuesArray.push(Object.values(data))
-        })
-
-        setParsedData(results.data)
-        setTableRows(rowsArray[0])
-        setValues(valuesArray)
-      }
-    })
-  }
+  const Page = selectDashBoard === true
+    ? <PageDashBoard />
+    : <PageHome
+        parsedData={parsedData}
+        setParsedData={setParsedData}
+      />
 
   useEffect(() => {
-    console.log(values)
-  }, [values])
+    if (parsedData) {
+      setSelectDashBoard(!selectDashBoard)
+    }
+  }, [selectDashBoard])
 
   return (
     <S.AppStyle>
       <S.HeaderStyle/>
 
       <S.MainStyle>
-        {!parsedData && <form>
-          <label htmlFor="file">Arquivo Csv</label>
-          <input
-            type="file"
-            accept='document/*,.csv'
-            onChange={handleSelect}
-          />
-          <input type="submit" value="Carregar" />
-        </form>}
-
-        {parsedData && <table>
-            <thead>
-              <tr>
-                {tableRows.map((rows: any, index) => {
-                  return <th key={index}>
-                    {rows}
-                  </th>
-                })}
-              </tr>
-            </thead>
-
-            <tbody>
-              {values.map((value: any, index) => {
-                return (
-                  <tr key={index}>
-                    {value.map((val: string, i: number) => {
-                      return <td key={i}>
-                        {val}
-                      </td>
-                    })}
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        }
+        {Page}
       </S.MainStyle>
     </S.AppStyle>
   )
