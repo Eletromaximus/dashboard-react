@@ -30,7 +30,7 @@ export function PageHome ({
           return valuesArray.push(Object.values(data))
         })
 
-        setParsedData(results.data)
+        setParsedData((prev: any) => [...prev, results.data])
         setTableRows(rowsArray[0])
         setValues(valuesArray)
       }
