@@ -16,7 +16,7 @@ export function SideBar () {
 
         <li>
           <TimelineIcon />
-          <span>Table</span>
+          <span>Graph</span>
         </li>
       </ul>
     </div>

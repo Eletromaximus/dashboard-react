@@ -1,18 +1,16 @@
-import { ChangeEvent, useEffect, useState } from 'react'
 import Papa from 'papaparse'
+import { ChangeEvent, Dispatch, SetStateAction } from 'react'
+import { FormStyle } from './styles'
 
-export function FileCapute () {
-  const [values, setValues] = useState([])
-  const [tableRows, setTableRows] = useState([])
+interface IFileCapture {
+  setValues: Dispatch<SetStateAction<any[] | []>>
+  setTableRows: Dispatch<SetStateAction<string[] | []>>
+}
 
-  useEffect(() => {
-    console.log(tableRows.length)
-    if (tableRows.length > 0) {
-      console.log(values)
-      console.log(tableRows)
-    }
-  }, [tableRows])
-
+export function FileCapute ({
+  setValues,
+  setTableRows
+}: IFileCapture) {
   function handleSelect (event: ChangeEvent<HTMLInputElement>) {
     if (!event.target.files) {
       return
@@ -29,15 +27,16 @@ export function FileCapute () {
           rowsArray.push(Object.keys(data))
           return valuesArray.push(Object.values(data))
         })
-        setTableRows(rowsArray[0])
-        setValues(valuesArray)
+        if (rowsArray && valuesArray && valuesArray !== undefined) {
+          setTableRows(rowsArray[0])
+          setValues(valuesArray)
+        }
       }
     })
   }
 
   return (
-
-    <form>
+    <FormStyle>
       <label htmlFor="file">Arquivo Csv</label>
       <input
         type="file"
@@ -45,6 +44,6 @@ export function FileCapute () {
         onChange={handleSelect}
       />
       <input type="submit" value="Carregar" />
-    </form>
+    </FormStyle>
   )
 }
