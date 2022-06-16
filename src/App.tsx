@@ -1,11 +1,15 @@
 import React from 'react'
-import { PageDashBoard } from './pages/PageDashBoard'
+import { Navbar } from './components/Navbar'
+import { SideBar } from './components/SideBar'
+// import { PageDashBoard } from './pages/PageDashBoard'
+
 import * as S from './styles'
 
 function App () {
   return (
     <S.AppStyle>
-      <PageDashBoard />
+      <Navbar />
+      <SideBar />
     </S.AppStyle>
   )
 }
