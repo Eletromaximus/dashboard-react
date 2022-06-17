@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend
 } from 'chart.js'
+import * as S from './styles'
 
 ChartJS.register(
   CategoryScale,
@@ -34,7 +35,8 @@ export const options = {
 
 interface IChart {
   prices: number[],
-  dataTurnos: string[]
+  dataTurnos: string[],
+  titles: string[]
 }
 
 export function Chart ({
@@ -51,14 +53,37 @@ export function Chart ({
       }
     ]
   }
+  const moneyLocale = Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  })
+
   return (
-  <div style={{
-    width: 700
-  }}>
-      <Bar
-        options={options}
-        data={data}
-      />
-    </div>
+  <S.ChartStyle>
+    <S.WidgetsBar>
+      <S.WidgetStyle>
+          <span className="title">
+            Total Arrecadado
+          </span>
+
+          <span className="counter">
+            {moneyLocale.format(prices.reduce((prev, current) => {
+              return prev + current
+            }))}
+          </span>
+        </S.WidgetStyle>
+    </S.WidgetsBar>
+
+    <div style={{
+      display: 'flex',
+      width: 700,
+      height: 500
+    }}>
+        <Bar
+          options={options}
+          data={data}
+        />
+      </div>
+    </S.ChartStyle>
   )
 }

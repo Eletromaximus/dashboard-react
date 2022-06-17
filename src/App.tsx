@@ -49,6 +49,7 @@ function App () {
         {dataTurnos && prices && <Chart
           dataTurnos={dataTurnos}
           prices={prices}
+          titles={tableRows}
         />}
       </S.Container>
     </S.AppStyle>
